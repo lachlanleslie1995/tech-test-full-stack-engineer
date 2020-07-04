@@ -27,11 +27,26 @@ app.get("/api/v1/capsule", async (req, res) => {
 
 app.get("/api/v1/landingpad/:id", async (req, res) => {
   let id = req.params.id;
-  const rows = await dbPool.query("SELECT * FROM spaceData");
-  let result = "";
+  const rows = await dbPool.query(`SELECT * FROM spaceData where id= '${id}'`);
+  let result = [];
 
   try {
     if (rows.length) {
+      console.log("result exists ");
+      console.log(rows);
+      //   await dbPool.query(`DELETE FROM spaceData where id = '${id}'`);
+
+      result = {
+        id: rows[0].id,
+        full_name: rows[0].full_name,
+        status: rows[0].status,
+        location: {
+          name: rows[0].location_name,
+          region: rows[0].location_region,
+          latitude: Number(rows[0].location_latitude),
+          longitude: Number(rows[0].location_longitude),
+        },
+      };
     } else {
       let response = await getLandingPads(id);
       if (response.data) {
@@ -42,9 +57,19 @@ app.get("/api/v1/landingpad/:id", async (req, res) => {
           status: response.data.status,
           location: response.data.location,
         };
+
+        console.log(response.data.location);
         await dbPool.query(
-          `INSERT INTO spaceData (id, spaceItem) VALUES('?, ?')`,
-          [result.id, JSON.stringify(result)]
+          `INSERT INTO spaceData (id, full_name, status, location_name, location_region, location_latitude, location_longitude) VALUES(?, ?, ?, ?, ?, ?, ?)`,
+          [
+            result.id,
+            result.full_name,
+            result.status,
+            result.location.name,
+            result.location.region,
+            result.location.latitude,
+            result.location.longitude,
+          ]
         );
       }
     }

@@ -1,10 +1,12 @@
 const dbPool = require("./db");
 const express = require("express");
+const cors = require("cors");
 const bodyParser = require("body-parser");
 const { getCapsules, getLandingPads } = require("./resources/spacexRequests");
 
 const app = express();
 
+app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -28,7 +30,7 @@ app.get("/api/v1/capsule", async (req, res) => {
 app.get("/api/v1/landingpad/:id", async (req, res) => {
   let id = req.params.id;
   const rows = await dbPool.query(`SELECT * FROM spaceData where id= '${id}'`);
-  let result = [];
+  let result = {};
 
   try {
     if (rows.length) {

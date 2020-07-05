@@ -9,7 +9,6 @@ const App = () => (
   <>
     <Application>
       <DisplayView />
-
       <ControlConsole />
     </Application>
     <GlobalStyle />

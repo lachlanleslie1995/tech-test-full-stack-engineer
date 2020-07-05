@@ -1,6 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import { ReactComponent as Rocket } from "../../assets/rocket.svg";
+import { connect, useDispatch } from "react-redux";
+import { getCapsules } from "../../redux/actions";
 
 const StyledControlContainer = styled.div`
   display: flex;
@@ -36,10 +38,18 @@ const StyledInput = styled.input`
   text-align: center;
 `;
 
+const capsuleClickHandler = () => {
+  //   console.log(store.getState());
+  //   store.dispatch(getCapsules());
+};
+
 const ControlConsole = () => {
+  const dispatch = useDispatch();
   return (
     <StyledControlContainer>
-      <StyledButton>Capsules</StyledButton>
+      <StyledButton onClick={() => dispatch({ type: "REQUEST_CAPSULES" })}>
+        Capsules
+      </StyledButton>
       <Rocket />
       <StyledInput placeholder="text"></StyledInput>
       <StyledButton>Landing Pad</StyledButton>
@@ -47,4 +57,8 @@ const ControlConsole = () => {
   );
 };
 
-export default ControlConsole;
+const mapStateToProps = (state) => ({
+  capsules: state.capsules,
+});
+
+export default connect(mapStateToProps, { getCapsules })(ControlConsole);

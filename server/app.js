@@ -27,8 +27,16 @@ app.get("/api/v1/capsule", async (req, res) => {
   }
 });
 
-app.get("/api/v1/landingpad/:id", async (req, res) => {
+app.get("/api/v1/landingpad/:id?", async (req, res) => {
   let id = req.params.id;
+
+  if (!id) {
+    res.status(404);
+    res.send({
+      errorMsg: "Failed to provide landing pad ID",
+    });
+  }
+
   const rows = await dbPool.query(`SELECT * FROM spaceData where id= '${id}'`);
   let result = [];
 
@@ -77,17 +85,19 @@ app.get("/api/v1/landingpad/:id", async (req, res) => {
     res.status(404);
     res.send({
       error: "" + e,
-      errorMsg: "Failed to get Landing Pad",
+      errorMsg: "Failed to get Landing Pad, Invalid ID",
       url: req.url,
     });
   }
 });
 
-app.get("/", async (req, res) => {
-  res.status(200);
+app.get("*", function (req, res, next) {
+  res.status(404);
   res.send({
-    result: "Welcome to Space airport API",
+    errorMsg:
+      "Invalid route, please visit /api/v1/landingpad/id or /api/v1/capsules",
   });
+  next();
 });
 
 app.listen("4000");

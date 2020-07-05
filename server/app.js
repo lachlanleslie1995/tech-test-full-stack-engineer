@@ -1,10 +1,12 @@
 const dbPool = require("./db");
 const express = require("express");
+const cors = require("cors");
 const bodyParser = require("body-parser");
 const { getCapsules, getLandingPads } = require("./resources/spacexRequests");
 
 const app = express();
 
+app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -32,10 +34,6 @@ app.get("/api/v1/landingpad/:id", async (req, res) => {
 
   try {
     if (rows.length) {
-      console.log("result exists ");
-      console.log(rows);
-      //   await dbPool.query(`DELETE FROM spaceData where id = '${id}'`);
-
       result = {
         id: rows[0].id,
         full_name: rows[0].full_name,
@@ -58,7 +56,6 @@ app.get("/api/v1/landingpad/:id", async (req, res) => {
           location: response.data.location,
         };
 
-        console.log(response.data.location);
         await dbPool.query(
           `INSERT INTO spaceData (id, full_name, status, location_name, location_region, location_latitude, location_longitude) VALUES(?, ?, ?, ?, ?, ?, ?)`,
           [

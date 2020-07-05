@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useState, useContext } from "react";
+import axios from "axios";
 import styled from "styled-components";
 import { ReactComponent as Rocket } from "../../assets/rocket.svg";
+import { SpaceDataContext } from "../Utils/spaceDataContext";
 
 const StyledControlContainer = styled.div`
   display: flex;
@@ -37,12 +39,27 @@ const StyledInput = styled.input`
 `;
 
 const ControlConsole = () => {
+  const { setCapsules, setLandingPad } = useContext(SpaceDataContext);
+
+  const getCapsules = async () => {
+    let response = await axios.get("http://localhost:4000/api/v1/capsule");
+    setCapsules(response.data.result);
+  };
+
+  const getLandingPad = async () => {
+    let id = document.getElementById("landingPadInput").value;
+    let response = await axios.get(
+      `http://localhost:4000/api/v1/landingpad/${id}`
+    );
+    setLandingPad(response.data.result);
+  };
+
   return (
     <StyledControlContainer>
-      <StyledButton>Capsules</StyledButton>
+      <StyledButton onClick={getCapsules}>Capsules</StyledButton>
       <Rocket />
-      <StyledInput placeholder="text"></StyledInput>
-      <StyledButton>Landing Pad</StyledButton>
+      <StyledInput id="landingPadInput" placeholder="text"></StyledInput>
+      <StyledButton onClick={getLandingPad}>Landing Pad</StyledButton>
     </StyledControlContainer>
   );
 };

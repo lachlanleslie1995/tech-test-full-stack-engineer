@@ -12,6 +12,11 @@ const StyledViewContainer = styled.div`
     overflow-y: scroll;
     order: 1;
     text-align: start;
+
+    @media only screen and (max-width: 1024px) {
+        height: 100%;
+        width: calc(66% - 20px);
+    }
     `;
 
 const StyledListItem = styled.li`

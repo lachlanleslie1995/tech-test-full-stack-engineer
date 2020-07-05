@@ -25,6 +25,28 @@ const StyledControlContainer = styled.div`
 
     margin: auto 0;
   }
+
+  @media only screen and (max-width: 1024px) {
+    height: 100%;
+    width: calc(34% - 30px);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    svg {
+      width: 100%;
+      height: 20%;
+      padding: 10px;
+    }
+    button {
+      height: 15%;
+      width: 80%;
+    }
+    input {
+      height: 15%;
+      width: 75%;
+    }
+  }
 `;
 
 const StyledButton = styled.button`

@@ -16,6 +16,14 @@ const Application = styled.div`
   left: 25%;
   width: 50%;
   height: 50%;
+
+  @media only screen and (max-width: 1024px) {
+    width: 100%;
+    height: 100%;
+    top: 0%;
+    left: 0%;
+    flex-direction: column;
+  }
 `;
 
 export { Application };

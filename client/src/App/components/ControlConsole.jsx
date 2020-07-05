@@ -54,11 +54,33 @@ const ControlConsole = () => {
     setLandingPad(response.data.result);
   };
 
+  const validateInput = (event) => {
+    let inputElement = document.getElementById("landingPadInput");
+    switch (event.charCode) {
+      case 35:
+      case 36:
+      case 37:
+      case 38:
+        event.preventDefault();
+    }
+    //Not the best way to do this. I'll fix if I think of something better/get maxlength working
+    if (inputElement.value.length > 15) {
+      inputElement.value = inputElement.value.substring(0, 15);
+    }
+  };
+
   return (
     <StyledControlContainer>
       <StyledButton onClick={getCapsules}>Capsules</StyledButton>
       <Rocket />
-      <StyledInput id="landingPadInput" placeholder="text"></StyledInput>
+      <StyledInput
+        id="landingPadInput"
+        type="text"
+        placeholder="text"
+        onKeyPress={validateInput}
+        maxlength="15"
+        pattern="^[^#%$]*$"
+      ></StyledInput>
       <StyledButton onClick={getLandingPad}>Landing Pad</StyledButton>
     </StyledControlContainer>
   );

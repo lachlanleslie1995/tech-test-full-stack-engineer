@@ -9,7 +9,7 @@ const StyledViewContainer = styled.div`
     width: 100%;
     height calc(66% - 20px);
     margin: 10px;
-    overflow: scroll;
+    overflow-y: scroll;
     order: 1;
     text-align: start;
     `;
